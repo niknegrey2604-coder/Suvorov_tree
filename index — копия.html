@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>А. В. Суворов — Непобедимый Генералиссимус | Проект Ёлка 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        suvorov: {
+                            gold: '#D4AF37',
+                            lightGold: '#F5E6B3',
+                            darkGold: '#8F6F1D',
+                            crimson: '#9B1B1B',
+                            emerald: '#0F5132',
+                            dark: '#0A0E17',
+                            card: '#121826',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #0A0E17;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 100% 65%, rgba(155, 27, 27, 0.09) 0%, transparent 45%);
+            overflow-x: hidden;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF7DC 0%, #D4AF37 50%, #8F6F1D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(18, 24, 38, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212, 175, 55, 0.24);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6)); }
+            50% { filter: drop-shadow(0 0 14px rgba(245, 230, 179, 0.95)); }
+        }
+        .tree-ornament {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .tree-ornament:active {
+            transform: scale(0.92);
+        }
+        .ornament-active {
+            animation: pulseGlow 1.8s infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-200 font-sans antialiased pb-28 selection:bg-suvorov-gold selection:text-black">
+
+    <!-- Всплывающее уведомление (Toast) -->
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full glass-card border border-suvorov-gold text-xs font-bold text-suvorov-lightGold flex items-center gap-2 shadow-2xl opacity-0 pointer-events-none transition-all duration-300 max-w-[92vw] text-center">
+        <i class="fa-solid fa-circle-check text-emerald-400 shrink-0"></i>
+        <span id="toast-text">Готово!</span>
+    </div>
+
+    <!-- Модальное окно полноэкранного просмотра -->
+    <div id="image-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+        <button id="modal-close" aria-label="Закрыть" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center text-lg active:scale-95 transition-all">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modal-container" class="w-full max-w-md max-h-[72vh] rounded-2xl overflow-hidden border border-suvorov-gold/40 flex items-center justify-center bg-slate-950"></div>
+        <p id="modal-caption" class="text-sm text-suvorov-lightGold font-serif mt-3 text-center max-w-md px-2"></p>
+    </div>
+
+    <!-- Модальное окно заявки на Ёлку 2026 -->
+    <div id="order-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-5 border border-suvorov-gold/50 space-y-4 relative">
+            <button onclick="closeOrderModal()" aria-label="Закрыть окно заявки" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 text-slate-300 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-sky-500/20 border border-sky-400/40 text-sky-300 flex items-center justify-center text-lg">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-white leading-tight">Заявка в Telegram @niknegrey7</h3>
+                    <span class="text-[11px] text-suvorov-gold">Суворовская Ёлка 2026 • Ручная работа</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                Заполните данные — откроется чат с <strong class="text-sky-300">@niknegrey7</strong> с уже готовым текстом вашей заявки на приобретение ёлки.
+            </p>
+            <form onsubmit="submitTreeOrder(event, 'modal')" class="space-y-2.5">
+                <input type="text" id="modal-order-name" required placeholder="Ваше имя *" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-suvorov-gold/30 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold">
+                <input type="text" id="modal-order-contact" required placeholder="Класс / Организация или контакт *" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-suvorov-gold/30 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold">
+                <textarea id="modal-order-comment" rows="2" placeholder="Комментарий или пожелание (необязательно)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900/90 border border-suvorov-gold/30 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold resize-none"></textarea>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-telegram text-base"></i>
+                    <span>Отправить заявку в Telegram (@niknegrey7)</span>
+                </button>
+                <button type="button" onclick="copyAndOpenTelegram('modal')" class="w-full py-2.5 rounded-xl bg-white/5 border border-suvorov-gold/35 text-suvorov-lightGold font-bold text-[11px] active:scale-95 transition-transform flex items-center justify-center gap-1.5">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>Скопировать текст заявки и открыть @niknegrey7</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Верхний Header -->
+    <header class="sticky top-0 z-40 px-4 py-2.5 bg-suvorov-dark/95 backdrop-blur-lg border-b border-suvorov-gold/25 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-suvorov-darkGold to-suvorov-gold p-[1.5px]">
+                <div class="w-full h-full rounded-full bg-suvorov-dark flex items-center justify-center">
+                    <i class="fa-solid fa-crown text-suvorov-gold text-xs"></i>
+                </div>
+            </div>
+            <div>
+                <span class="font-serif font-bold text-base tracking-wide text-white block leading-none">А. В. СУВОРОВ</span>
+                <span class="text-[10px] uppercase tracking-widest text-suvorov-gold font-bold">1730 — 1800 • Генералиссимус</span>
+            </div>
+        </div>
+
+        <button onclick="switchTab('tree')" class="px-2.5 py-1.5 rounded-full bg-emerald-950/90 border border-emerald-500/40 text-[10px] text-emerald-300 font-bold flex items-center gap-1.5 active:scale-95 transition-transform">
+            <i class="fa-solid fa-tree text-emerald-400"></i>
+            <span>Ёлка 2026</span>
+        </button>
+    </header>
+
+    <main class="max-w-xl mx-auto px-4 space-y-5 mt-3">
+
+        <!-- ВЕРХНИЙ БАННЕР: УСТАНОВИТЬ СВОИ 3 ФОТО СУВОРОВА ИЗ ГАЛЕРЕИ -->
+        <section class="glass-card rounded-2xl p-3 border border-suvorov-gold/45 shadow-lg">
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-suvorov-gold/20 border border-suvorov-gold/30 text-suvorov-gold flex items-center justify-center text-sm shrink-0">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="text-xs font-bold text-white truncate">Установить свои 3 фото Суворова</div>
+                        <div class="text-[10px] text-slate-400 truncate">Из галереи телефона • сохраняются в памяти</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button id="reset-photos-btn" onclick="resetCustomPhotos()" title="Сбросить на встроенные портреты" class="hidden w-9 h-9 rounded-xl bg-white/5 border border-white/15 text-slate-300 flex items-center justify-center text-xs active:scale-95">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                    <label class="cursor-pointer px-3 py-2 rounded-xl bg-gradient-to-r from-suvorov-gold to-amber-500 text-slate-950 font-extrabold text-[11px] shadow-md flex items-center gap-1.5 active:scale-95 transition-transform">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Загрузить</span>
+                        <input type="file" id="multi-file-loader" accept="image/*" multiple class="hidden">
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ВКЛАДКА 1: ГЛАВНАЯ                                         -->
+        <!-- ========================================================= -->
+        <div id="tab-home" class="tab-panel space-y-6">
+
+            <!-- Hero-блок -->
+            <section class="text-center space-y-4 pt-1">
+                <div class="relative mx-auto w-60 h-60">
+                    <div class="absolute -inset-2 bg-gradient-to-tr from-suvorov-gold/35 via-suvorov-crimson/30 to-suvorov-gold/25 rounded-full blur-xl opacity-85"></div>
+
+                    <div class="relative w-full h-full rounded-full p-2 bg-gradient-to-b from-suvorov-gold via-suvorov-darkGold to-suvorov-crimson shadow-2xl flex items-center justify-center">
+                        <div id="hero-img-slot" class="w-full h-full rounded-full overflow-hidden border-2 border-suvorov-lightGold/90 bg-slate-950 cursor-pointer" onclick="openSlotModal('hero-img-slot', 'А. В. Суворов — Канонический портрет с белым чубом и орденами')">
+                            <!-- Встроенный SVG-портрет 1: Канонический портрет с белым чубом и орденами -->
+                            <svg viewBox="0 0 400 400" class="w-full h-full object-cover">
+                                <defs>
+                                    <radialGradient id="h-bg" cx="50%" cy="32%" r="70%">
+                                        <stop offset="0%" stop-color="#57422d"/>
+                                        <stop offset="65%" stop-color="#261b12"/>
+                                        <stop offset="100%" stop-color="#0f0b08"/>
+                                    </radialGradient>
+                                    <linearGradient id="h-hair" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="65%" stop-color="#e2e8f0"/>
+                                        <stop offset="100%" stop-color="#94a3b8"/>
+                                    </linearGradient>
+                                    <linearGradient id="h-face" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#fadbc0"/>
+                                        <stop offset="55%" stop-color="#eec09c"/>
+                                        <stop offset="100%" stop-color="#d4936a"/>
+                                    </linearGradient>
+                                    <linearGradient id="h-sash" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#38bdf8"/>
+                                        <stop offset="50%" stop-color="#0284c7"/>
+                                        <stop offset="100%" stop-color="#0369a1"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="400" height="400" fill="url(#h-bg)"/>
+                                <path d="M 75 400 Q 138 268 200 268 Q 262 268 325 400 Z" fill="#13251d"/>
+                                <path d="M 152 262 L 174 218 L 226 218 L 248 262 Z" fill="#991b1b"/>
+                                <path d="M 118 400 L 222 248 L 252 264 L 168 400 Z" fill="url(#h-sash)"/>
+                                <!-- Звезда Андрея Первозванного -->
+                                <circle cx="252" cy="348" r="28" fill="#fef08a" stroke="#ca8a04" stroke-width="3"/>
+                                <polygon points="252,322 260,340 279,340 264,352 270,370 252,359 234,370 240,352 225,340 244,340" fill="#ca8a04"/>
+                                <!-- Орден Св. Георгия на шее -->
+                                <polygon points="200,252 206,266 220,266 209,275 213,288 200,280 187,288 191,275 180,266 194,266" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+                                <path d="M 176 230 L 224 230 L 219 184 L 181 184 Z" fill="#eed9c4"/>
+                                <path d="M 184 218 L 216 218 L 205 234 L 195 234 Z" fill="#ffffff"/>
+                                <!-- Лицо -->
+                                <path d="M 155 124 C 150 188 165 218 200 218 C 235 218 250 188 245 124 C 240 68 160 68 155 124 Z" fill="url(#h-face)"/>
+                                <!-- Глаза -->
+                                <ellipse cx="180" cy="129" rx="9" ry="5" fill="#ffffff"/>
+                                <circle cx="181" cy="129" r="3.6" fill="#1e3a8a"/>
+                                <ellipse cx="220" cy="129" rx="9" ry="5" fill="#ffffff"/>
+                                <circle cx="219" cy="129" r="3.6" fill="#1e3a8a"/>
+                                <!-- Брови и морщинки -->
+                                <path d="M 169 119 Q 180 113 192 121" stroke="#64748b" stroke-width="2.2" fill="none"/>
+                                <path d="M 231 119 Q 220 113 208 121" stroke="#64748b" stroke-width="2.2" fill="none"/>
+                                <path d="M 175 98 Q 200 94 225 98" stroke="#c2855c" stroke-width="1.3" fill="none"/>
+                                <!-- Нос и губы -->
+                                <path d="M 200 120 L 205 160 L 195 163 Z" fill="#c27849" opacity="0.45"/>
+                                <path d="M 185 181 Q 200 185 215 181" stroke="#991b1b" stroke-width="2.5" fill="none"/>
+                                <!-- Знаменитый белый чуб и локоны -->
+                                <path d="M 194 74 Q 200 36 207 26 Q 214 43 208 74 Z" fill="url(#h-hair)"/>
+                                <path d="M 158 108 C 132 108 132 162 154 172 C 149 145 151 124 164 114 Z" fill="url(#h-hair)"/>
+                                <path d="M 242 108 C 268 108 268 162 246 172 C 251 145 249 124 236 114 Z" fill="url(#h-hair)"/>
+                                <path d="M 155 94 Q 200 62 245 94 Q 200 78 155 94 Z" fill="url(#h-hair)"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-suvorov-card border border-suvorov-gold px-3.5 py-1 rounded-full text-[10px] uppercase tracking-widest text-suvorov-lightGold font-bold shadow-xl flex items-center gap-1.5">
+                        <i class="fa-solid fa-crown text-suvorov-gold"></i>
+                        Генералиссимус Суворов
+                    </div>
+                </div>
+
+                <!-- Заголовок и счётчики -->
+                <div class="space-y-1.5 pt-1">
+                    <span class="text-[11px] uppercase tracking-widest text-suvorov-gold font-bold block">Непобедимый гений русской армии</span>
+                    <h1 class="font-serif text-3xl font-bold text-white leading-tight">
+                        Александр Васильевич <br />
+                        <span class="gold-gradient-text text-4xl font-black">Суворов</span>
+                    </h1>
+                </div>
+
+                <!-- Счётчики достижений -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div class="glass-card rounded-2xl p-3 border border-suvorov-gold/30">
+                        <div class="font-serif text-2xl font-bold text-suvorov-lightGold">63 боя • 0 поражений</div>
+                        <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">Ни одного проигранного сражения</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-3 border border-suvorov-gold/30">
+                        <div class="font-serif text-2xl font-bold text-suvorov-lightGold">60 лет в строю</div>
+                        <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">От мушкетёра до Генералиссимуса</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Галерея: Подлинные исторические портреты (3 карточки) -->
+            <section class="glass-card rounded-2xl p-3.5 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-serif font-bold text-suvorov-lightGold flex items-center gap-1.5">
+                        <i class="fa-solid fa-palette text-suvorov-gold"></i>
+                        Подлинные исторические портреты
+                    </h2>
+                    <span class="text-[10px] text-slate-400">Тапните для зума</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <!-- Карточка 1 -->
+                    <div class="space-y-1 cursor-pointer group" onclick="openSlotModal('thumb-slot-1', '1. Канонический портрет А. В. Суворова с белым чубом и орденами')">
+                        <div id="thumb-slot-1" class="h-28 rounded-xl overflow-hidden border border-suvorov-gold/35 bg-slate-900 relative">
+                            <svg viewBox="0 0 200 200" class="w-full h-full object-cover">
+                                <rect width="200" height="200" fill="#261b12"/>
+                                <path d="M 40 200 Q 100 132 160 200 Z" fill="#13251d"/>
+                                <path d="M 65 200 L 122 130 L 138 140 L 88 200 Z" fill="#0284c7"/>
+                                <circle cx="130" cy="172" r="14" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+                                <circle cx="100" cy="82" r="42" fill="#f4cba6"/>
+                                <ellipse cx="89" cy="80" rx="4.5" ry="2.5" fill="#1e3a8a"/>
+                                <ellipse cx="111" cy="80" rx="4.5" ry="2.5" fill="#1e3a8a"/>
+                                <path d="M 97 44 Q 100 20 105 15 Q 109 28 105 44 Z" fill="#ffffff"/>
+                                <path d="M 66 72 Q 100 46 134 72 Z" fill="#e2e8f0"/>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] block text-suvorov-lightGold font-bold text-center truncate">С чубом и орденами</span>
+                    </div>
+
+                    <!-- Карточка 2 -->
+                    <div class="space-y-1 cursor-pointer group" onclick="openSlotModal('thumb-slot-2', '2. Суворов на боевой позиции с тростью в руке')">
+                        <div id="thumb-slot-2" class="h-28 rounded-xl overflow-hidden border border-suvorov-gold/50 bg-slate-900 relative ring-1 ring-suvorov-gold/40">
+                            <svg viewBox="0 0 200 200" class="w-full h-full object-cover">
+                                <rect width="200" height="200" fill="#b48a5a"/>
+                                <rect y="85" width="200" height="115" fill="#8c673a"/>
+                                <path d="M 45 195 L 105 88 L 178 118 L 158 200 Z" fill="#16261f"/>
+                                <path d="M 96 92 L 122 72 L 136 108 Z" fill="#991b1b"/>
+                                <circle cx="92" cy="62" r="22" fill="#fadbc0"/>
+                                <path d="M 80 44 Q 92 32 104 44 Z" fill="#f8fafc"/>
+                                <rect x="142" y="142" width="28" height="20" rx="6" fill="#991b1b"/>
+                                <circle cx="148" cy="168" r="10" fill="#fadbc0"/>
+                                <line x1="148" y1="168" x2="148" y2="200" stroke="#78350f" stroke-width="5"/>
+                            </svg>
+                            <span class="absolute top-1 right-1 bg-suvorov-crimson text-[8px] text-white font-bold px-1.5 py-0.5 rounded">На позиции</span>
+                        </div>
+                        <span class="text-[10px] block text-suvorov-lightGold font-bold text-center truncate">С тростью в бою</span>
+                    </div>
+
+                    <!-- Карточка 3 -->
+                    <div class="space-y-1 cursor-pointer group" onclick="openSlotModal('thumb-slot-3', '3. Парадный портрет И. Крейцингера 1799 года с указующим жестом')">
+                        <div id="thumb-slot-3" class="h-28 rounded-xl overflow-hidden border border-suvorov-gold/35 bg-slate-900 relative">
+                            <svg viewBox="0 0 200 200" class="w-full h-full object-cover">
+                                <rect width="200" height="200" fill="#2c2623"/>
+                                <path d="M 72 200 L 104 82 L 166 94 L 155 200 Z" fill="#131e19"/>
+                                <path d="M 100 78 L 120 68 L 135 88 Z" fill="#dc2626"/>
+                                <circle cx="115" cy="54" r="18" fill="#eed9c4"/>
+                                <ellipse cx="115" cy="43" rx="19" ry="12" fill="#ffffff"/>
+                                <line x1="100" y1="86" x2="142" y2="152" stroke="#38bdf8" stroke-width="10"/>
+                                <line x1="94" y1="104" x2="46" y2="118" stroke="#131e19" stroke-width="8"/>
+                                <circle cx="44" cy="118" r="6" fill="#eed9c4"/>
+                                <polygon points="48,195 84,158 116,195" fill="#1e293b" stroke="#ca8a04" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] block text-suvorov-lightGold font-bold text-center truncate">Крейцингер 1799</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Анонс-переход на вкладку Ёлка 2026 -->
+            <section onclick="switchTab('tree')" class="cursor-pointer rounded-2xl p-4 bg-gradient-to-r from-emerald-950/90 via-suvorov-card to-amber-950/60 border border-emerald-500/45 flex items-center justify-between gap-3 active:scale-[0.99] transition-transform shadow-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold block">Проект нашего класса • 2026</span>
+                        <h3 class="font-serif text-lg font-bold text-white leading-tight">Суворовская Ёлка 2026</h3>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Интерактивная модель, 7 вопросов и заявка в Telegram</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-suvorov-gold text-sm shrink-0"></i>
+            </section>
+
+            <!-- Крылатые афоризмы А. В. Суворова -->
+            <section class="space-y-2.5">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-serif font-bold text-suvorov-lightGold flex items-center gap-1.5">
+                        <i class="fa-solid fa-quote-left text-suvorov-gold"></i>
+                        Заветы Генералиссимуса
+                    </h2>
+                    <span class="text-[10px] text-slate-400">Нажмите, чтобы скопировать</span>
+                </div>
+
+                <div onclick="copyQuote('Тяжело в учении — легко в бою, легко в учении — тяжело в бою! — А. В. Суворов')" class="cursor-pointer glass-card rounded-2xl p-4 border-l-4 border-l-suvorov-gold flex items-start justify-between gap-3 active:scale-[0.99] transition-transform">
+                    <div class="space-y-1">
+                        <p class="font-serif italic text-base text-white leading-snug">«Тяжело в учении — легко в бою, легко в учении — тяжело в бою!»</p>
+                        <span class="text-[10px] text-suvorov-gold font-bold block">— А. В. Суворов, «Наука побеждать»</span>
+                    </div>
+                    <i class="fa-regular fa-copy text-suvorov-gold/80 text-sm mt-1 shrink-0"></i>
+                </div>
+
+                <div onclick="copyQuote('Сам погибай, а товарища выручай! — А. В. Суворов')" class="cursor-pointer glass-card rounded-2xl p-4 border-l-4 border-l-emerald-500 flex items-start justify-between gap-3 active:scale-[0.99] transition-transform">
+                    <div class="space-y-1">
+                        <p class="font-serif italic text-base text-white leading-snug">«Сам погибай, а товарища выручай!»</p>
+                        <span class="text-[10px] text-emerald-400 font-bold block">— Заповедь суворовского братства</span>
+                    </div>
+                    <i class="fa-regular fa-copy text-emerald-400/80 text-sm mt-1 shrink-0"></i>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ВКЛАДКА 2: ЁЛКА 2026 (ОТДЕЛЬНАЯ ВКЛАДКА)                   -->
+        <!-- ========================================================= -->
+        <div id="tab-tree" class="tab-panel hidden space-y-5">
+
+            <!-- Заголовок и концепция проекта класса -->
+            <section class="glass-card rounded-3xl p-5 border border-emerald-500/40 bg-gradient-to-b from-emerald-950/50 to-suvorov-card space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-sparkles"></i> Новогодний проект класса • 2026
+                </div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight">
+                    Новогодняя Ёлка 2026: <span class="gold-gradient-text">Александр Суворов и его доблестные победы</span>
+                </h2>
+                <p class="text-xs text-slate-200 leading-relaxed">
+                    Нашему классу выпала честь оформлять ёлку в 2026 году в стиле военной тематики <strong class="text-suvorov-lightGold">«Александра Васильевича Суворова и его доблестных побед»</strong>. Мы изучили его личные качества, сражения на протяжении 60 лет и секреты побед, чтобы отразить характер личности, его награды и духовные качества по-новогоднему.
+                </p>
+                <div class="p-3 rounded-2xl bg-black/35 border border-suvorov-gold/25 text-xs text-suvorov-lightGold flex items-start gap-2.5">
+                    <i class="fa-solid fa-hands-holding-circle text-suvorov-gold text-base mt-0.5"></i>
+                    <span>Часть экспозиций и муляжей сделана <strong>своими руками</strong> — поэтому наша ЁЛКА по-особенному несёт тепло наших рук и отражает силу характера полководца!</span>
+                </div>
+            </section>
+
+            <!-- Интерактивная схема-ёлка с нажимаемыми ярусами и игрушками -->
+            <section class="glass-card rounded-3xl p-4 border border-suvorov-gold/35 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold block">Интерактивная модель</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Нажмите на игрушку или ярус</h3>
+                    </div>
+                    <span class="text-[10px] px-2 py-1 rounded-lg bg-white/5 text-slate-300">Ручная работа</span>
+                </div>
+
+                <!-- SVG-Ёлка с кликабельными элементами -->
+                <div class="relative w-full max-w-xs mx-auto">
+                    <svg viewBox="0 0 320 380" class="w-full h-auto select-none">
+                        <defs>
+                            <linearGradient id="tree-g1" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#15803d"/>
+                                <stop offset="100%" stop-color="#052e16"/>
+                            </linearGradient>
+                            <linearGradient id="tree-g2" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#166534"/>
+                                <stop offset="100%" stop-color="#064e3b"/>
+                            </linearGradient>
+                            <radialGradient id="star-glow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="100%" stop-color="#dc2626"/>
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Ствол и подставка (Основание) -->
+                        <rect x="142" y="315" width="36" height="40" rx="4" fill="#451a03"/>
+                        <path d="M 95 352 L 225 352 L 235 370 L 85 370 Z" fill="#1e293b" stroke="#D4AF37" stroke-width="1.5"/>
+
+                        <!-- Ярусы ели -->
+                        <!-- Нижний ярус -->
+                        <polygon points="35,320 160,210 285,320" fill="url(#tree-g2)" stroke="#22c55e" stroke-opacity="0.35" stroke-width="1.5"/>
+                        <!-- Средний ярус -->
+                        <polygon points="55,245 160,135 265,245" fill="url(#tree-g1)" stroke="#22c55e" stroke-opacity="0.4" stroke-width="1.5"/>
+                        <!-- Верхний ярус -->
+                        <polygon points="80,165 160,65 240,165" fill="url(#tree-g2)" stroke="#4ade80" stroke-opacity="0.45" stroke-width="1.5"/>
+
+                        <!-- Гирлянда -->
+                        <path d="M 105 140 Q 160 168 215 140" fill="none" stroke="#F5E6B3" stroke-width="2" stroke-dasharray="4 4"/>
+                        <path d="M 75 220 Q 160 255 245 220" fill="none" stroke="#F5E6B3" stroke-width="2" stroke-dasharray="4 4"/>
+                        <path d="M 55 295 Q 160 330 265 295" fill="none" stroke="#F5E6B3" stroke-width="2" stroke-dasharray="4 4"/>
+
+                        <!-- 1. ЗВЕЗДА НА МАКУШКЕ (Швейцарский поход и чин Генералиссимуса) -->
+                        <g class="tree-ornament ornament-active" onclick="selectTreeItem(0)">
+                            <circle cx="160" cy="40" r="26" fill="#D4AF37" fill-opacity="0.18"/>
+                            <polygon points="160,12 168,31 188,31 172,43 178,62 160,50 142,62 148,43 132,31 152,31" fill="url(#star-glow)" stroke="#FFF7DC" stroke-width="1.5"/>
+                        </g>
+
+                        <!-- 2. ОРДЕН СВ. ГЕОРГИЯ И АНДРЕЯ ПЕРВОЗВАННОГО (Верхний ярус) -->
+                        <g class="tree-ornament" onclick="selectTreeItem(1)">
+                            <circle cx="132" cy="128" r="16" fill="#ffffff" stroke="#D4AF37" stroke-width="2.5"/>
+                            <path d="M 132 116 L 132 140 M 120 128 L 144 128" stroke="#dc2626" stroke-width="4"/>
+                            <circle cx="132" cy="128" r="4" fill="#D4AF37"/>
+                        </g>
+
+                        <!-- 3. ШПАГА «ПОБЕДИТЕЛЮ ВИЗИРЯ» И АЛЬПЫ (Верхний ярус справа) -->
+                        <g class="tree-ornament" onclick="selectTreeItem(2)">
+                            <circle cx="192" cy="134" r="15" fill="#0284c7" stroke="#F5E6B3" stroke-width="2"/>
+                            <line x1="183" y1="143" x2="201" y2="125" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="186" y1="133" x2="193" y2="140" stroke="#D4AF37" stroke-width="2.5"/>
+                        </g>
+
+                        <!-- 4. МАКЕТ КРЕПОСТИ ИЗМАИЛ (Средний ярус центр) -->
+                        <g class="tree-ornament" onclick="selectTreeItem(3)">
+                            <rect x="136" y="185" width="48" height="30" rx="6" fill="#991b1b" stroke="#D4AF37" stroke-width="2"/>
+                            <polygon points="140,185 147,174 154,185 160,174 166,185 173,174 180,185" fill="#D4AF37"/>
+                            <text x="160" y="205" text-anchor="middle" fill="#FFF7DC" font-size="9" font-weight="bold">ИЗМАИЛ</text>
+                        </g>
+
+                        <!-- 5. «НАУКА ПОБЕЖДАТЬ» И ТРЕУГОЛКА (Средний ярус по бокам) -->
+                        <g class="tree-ornament" onclick="selectTreeItem(4)">
+                            <circle cx="96" cy="212" r="15" fill="#7c2d12" stroke="#D4AF37" stroke-width="2"/>
+                            <polygon points="86,216 96,203 106,216" fill="#0f172a" stroke="#D4AF37" stroke-width="1.5"/>
+                        </g>
+
+                        <g class="tree-ornament" onclick="selectTreeItem(4)">
+                            <circle cx="224" cy="212" r="15" fill="#7c2d12" stroke="#D4AF37" stroke-width="2"/>
+                            <rect x="217" y="205" width="14" height="15" rx="2" fill="#F5E6B3"/>
+                            <line x1="220" y1="209" x2="228" y2="209" stroke="#7c2d12" stroke-width="1.5"/>
+                            <line x1="220" y1="213" x2="228" y2="213" stroke="#7c2d12" stroke-width="1.5"/>
+                        </g>
+
+                        <!-- 6. ОСНОВАНИЕ: ДЕТСКОЕ ЗАКАЛИВАНИЕ И КНИГИ ПЛУТАРХА (Нижний ярус) -->
+                        <g class="tree-ornament" onclick="selectTreeItem(5)">
+                            <rect x="92" y="274" width="136" height="30" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+                            <text x="160" y="293" text-anchor="middle" fill="#bae6fd" font-size="9.5" font-weight="bold">ЗАКАЛИВАНИЕ • ПЛУТАРХ</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Карточка описания выбранной игрушки/яруса -->
+                <div id="tree-detail-box" class="rounded-2xl p-3.5 bg-slate-900/90 border border-suvorov-gold/40 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span id="tree-item-badge" class="text-[10px] uppercase tracking-wider font-bold text-emerald-400">Вершина ёлки • Звезда славы</span>
+                        <span class="text-[10px] text-slate-400">Элемент 1 из 6</span>
+                    </div>
+                    <h4 id="tree-item-title" class="font-serif text-lg font-bold text-suvorov-lightGold">Швейцарский поход и чин Генералиссимуса</h4>
+                    <p id="tree-item-desc" class="text-xs text-slate-300 leading-relaxed">
+                        Венчает нашу ёлку как высший триумф: переход через Альпы (Сен-Готард, Чёртов мост, перевал Паникс) в 1799 году и присвоение высшего воинского звания Генералиссимуса российских войск.
+                    </p>
+                </div>
+
+                <!-- Быстрые кнопки выбора ярусов -->
+                <div class="flex gap-1.5 overflow-x-auto hide-scrollbar pt-1">
+                    <button onclick="selectTreeItem(0)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-suvorov-gold text-slate-950 font-bold text-[10px] shrink-0">★ Вершина</button>
+                    <button onclick="selectTreeItem(1)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-white/5 text-slate-300 font-semibold text-[10px] shrink-0">Ордена</button>
+                    <button onclick="selectTreeItem(2)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-white/5 text-slate-300 font-semibold text-[10px] shrink-0">Шпага и Рымник</button>
+                    <button onclick="selectTreeItem(3)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-white/5 text-slate-300 font-semibold text-[10px] shrink-0">Макет Измаила</button>
+                    <button onclick="selectTreeItem(4)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-white/5 text-slate-300 font-semibold text-[10px] shrink-0">Наука побеждать</button>
+                    <button onclick="selectTreeItem(5)" class="tree-chip px-2.5 py-1.5 rounded-lg bg-white/5 text-slate-300 font-semibold text-[10px] shrink-0">Основание</button>
+                </div>
+            </section>
+
+            <!-- 7 ГЛАВНЫХ ВОПРОСОВ НАШЕГО ПРОЕКТА -->
+            <section class="space-y-3">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-suvorov-gold font-bold block">Исследование класса</span>
+                    <h3 class="font-serif text-2xl font-bold text-white">7 главных вопросов при создании Ёлки</h3>
+                </div>
+
+                <div class="space-y-2.5" id="seven-questions-list">
+                    <!-- Вопрос 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>1. Что помогало А. В. Суворову побеждать во всех сражениях?</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform rotate-180"></i>
+                        </button>
+                        <div class="q7-content px-4 pb-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <ul class="space-y-1.5 list-disc pl-4">
+                                <li><strong class="text-suvorov-lightGold">Подготовка выше страха:</strong> «Наука побеждать» учила действовать в бою на автомате — меткой стрельбе, штыковому бою («пуля — дура, штык — молодец») и быстрому манёвру вместо пустой муштры.</li>
+                                <li><strong class="text-suvorov-lightGold">Скорость:</strong> при Рымнике в 1789 г. с 25 тысячами солдат он настиг 100-тысячную турецкую армию и разгромил её за счёт внезапности.</li>
+                                <li><strong class="text-suvorov-lightGold">Понимание солдата:</strong> знал солдат по именам, заботился об их быте и еде, говорил простым языком.</li>
+                                <li><strong class="text-suvorov-lightGold">Разведка и местность:</strong> лично осматривал позиции; штурм Измаила (1790) неделями отрабатывался на земляном макете крепости.</li>
+                                <li><strong class="text-suvorov-lightGold">Простота и решительность:</strong> «как можно быстрее — напористо — внезапно», концентрация сил на главном направлении.</li>
+                                <li><strong class="text-suvorov-lightGold">Реформаторство вопреки системе:</strong> действовал вопреки косной военной школе и побеждал. Итог одной фразой: <em>«Тяжело в учении — легко в бою»</em>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>2. Как слабый и болезненный мальчик стал героем?</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p>Александр родился в 1730 г. в Москве в семье генерал-аншефа Василия Ивановича Суворова. Мальчик рос хилым, до 7 лет плохо ходил, и отец готовил его к гражданской службе.</p>
+                            <p><strong class="text-suvorov-lightGold">Победа над собой:</strong> Александр начал закаливаться — обливался холодной водой, ходил в любую погоду без шубы, занимался физически.</p>
+                            <p><strong class="text-suvorov-lightGold">Три опоры:</strong> книги (Плутарх, Цезарь, труды по военному искусству), поддержка деда и встреча с генералом <strong class="text-suvorov-lightGold">Абрамом Ганнибалом</strong> (прадедом А. С. Пушкина), который поразился знаниям мальчика и убедил отца оставить его на военной службе. С 1748 г. Суворов начал службу нижним чином в Семёновском полку, пройдя путь шаг за шагом.</p>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 3 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>3. Что им двигало и кто его знаменитые ученики?</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-suvorov-lightGold">Три мотора полководца:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>Жажда военной славы ради великих дел и Отечества, а не ради придворных должностей.</li>
+                                <li>Убеждённость, что полководцами становятся через ежедневный труд и учение.</li>
+                                <li>Отношение к солдату как к равному труженику — искреннее братство, выросшее из собственной солдатской службы.</li>
+                            </ol>
+                            <p>Свои идеи он изложил в «Полковом учреждении» и «Науке побеждать». Под его началом выросли <strong class="text-suvorov-lightGold">Михаил Кутузов, Пётр Багратион и Михаил Милорадович</strong>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 4 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>4. Сражения, победы и что они дали России в целом?</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-suvorov-lightGold">Ключевые вехи:</strong> Польша (1768–1772, ни одного поражения); Туртукай (1773) и Козлуджа (1774, открывшая путь к Кючук-Кайнарджийскому миру); оборона Кинбурна (1787, два ранения); Фокшаны и Рымник (1789 — разгром 100-тысячной армии визиря); штурм неприступного Измаила за 8 часов (22 декабря 1790); штурм Праги (1794, чин фельдмаршала); Итальянский (Адда, Треббия, Нови) и Швейцарский походы 1799 г. через Сен-Готард, Чёртов мост и перевал Паникс.</p>
+                            <p><strong class="text-emerald-300">Значение для России:</strong> выход к Чёрному морю, закрепление Причерноморья и Крыма (Одесса, Севастополь, Черноморский флот), слава непобедимой русской армии и школа командиров 1812 года.</p>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 5 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>5. Награды и высшие титулы Генералиссимуса</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                            <p>• <strong class="text-suvorov-lightGold">Орден Св. Анны (1770)</strong> — первая награда за Польшу.</p>
+                            <p>• <strong class="text-suvorov-lightGold">Орден Св. Георгия 3-й (1772), 2-й (1773, Туртукай) и 1-й степени (1789, Рымник)</strong> — Суворов стал 7-м и последним кавалером высшей степени за первые 16 лет ордена.</p>
+                            <p>• <strong class="text-suvorov-lightGold">Ордена Св. Александра Невского (1774), Св. Владимира 1-й ст. (1783), Св. Андрея Первозванного (1787, Кинбурн)</strong>.</p>
+                            <p>• <strong class="text-suvorov-lightGold">Шпага с бриллиантами «Победителю визиря»</strong> и графский титул «Суворов-Рымникский»; медаль «За взятие Измаила» (1790); чин генерал-фельдмаршала (1794); титул <strong class="text-suvorov-lightGold">Князя Италийского</strong>; ордена Марии Терезии, Св. Благовещения, Мальтийский крест.</p>
+                            <p>• <strong class="text-emerald-300">Генералиссимус (28 октября 1799)</strong> — высшее воинское звание в истории России, присвоенное за Швейцарский поход.</p>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 6 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>6. Была ли семья и дети у А. В. Суворова?</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 leading-relaxed">
+                            <p>Суворов был женат на княжне <strong class="text-suvorov-lightGold">Варваре Ивановне Прозоровской</strong> (1750–1806). У них родились двое детей: дочь <strong class="text-suvorov-lightGold">Наталья</strong> (1775–1844, любимая «Суворочка» полководца) и сын <strong class="text-suvorov-lightGold">Аркадий</strong> (1784–1811), ставший генерал-лейтенантом и трагически погибший при переправе через реку Рымник.</p>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос 7 -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25">
+                        <button class="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-serif font-bold text-white q7-btn">
+                            <span>7. Последние годы жизни и уход полководца</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-suvorov-gold transition-transform"></i>
+                        </button>
+                        <div class="q7-content hidden px-4 pb-4 text-xs text-slate-300 leading-relaxed">
+                            <p>В 1797 году император Павел I отправил Суворова в отставку и ссылку в село <strong class="text-suvorov-lightGold">Кончанское</strong> за отказ вводить в армии прусские порядки («Пудра не порох, букли не пушки, коса не тесак»). В феврале 1799 года император вернул его в строй для похода против Франции.</p>
+                            <p class="mt-1.5">Возвращаясь из тяжелейшего Швейцарского похода, Александр Васильевич серьёзно заболел. Он скончался <strong class="text-suvorov-lightGold">6 (18) мая 1800 года</strong> в Санкт-Петербурге и был похоронен в Благовещенской усыпальнице Александро-Невской лавры под лаконичной надписью: <em>«Здесь лежит Суворов»</em>.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Яркая карточка-призыв приобрести Ёлку + Прямая форма отправки в Telegram @niknegrey7 -->
+            <section id="tree-order-section" class="rounded-3xl p-5 bg-gradient-to-br from-amber-500/20 via-suvorov-crimson/25 to-emerald-950/85 border-2 border-suvorov-gold shadow-2xl space-y-4">
+                <div class="text-center space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-suvorov-gold text-slate-950 mx-auto flex items-center justify-center text-xl shadow-lg">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-white leading-snug">
+                        Успейте приобрести нашу Ёлку для тех, кому нужно быть сильнее, увереннее, кому нужна удача в победе!
+                    </h3>
+                    <p class="text-xs text-slate-200 leading-relaxed">
+                        Эксклюзивная авторская композиция с игрушками и муляжами ручной работы от нашего класса. Оставьте заявку — она сразу откроется в личных сообщениях <strong class="text-sky-300">@niknegrey7</strong>.
+                    </p>
+                </div>
+
+                <!-- Встроенная форма заявки на Ёлку 2026 -->
+                <form onsubmit="submitTreeOrder(event, 'inline')" class="space-y-2.5 pt-1 text-left">
+                    <div>
+                        <label for="inline-order-name" class="block text-[10px] uppercase tracking-wider text-suvorov-lightGold font-bold mb-1">Ваше имя *</label>
+                        <input type="text" id="inline-order-name" required placeholder="Например: Анна Петрова" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/85 border border-suvorov-gold/35 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold">
+                    </div>
+                    <div>
+                        <label for="inline-order-contact" class="block text-[10px] uppercase tracking-wider text-suvorov-lightGold font-bold mb-1">Класс / Организация или контакт *</label>
+                        <input type="text" id="inline-order-contact" required placeholder="Например: 7 «Б» класс или +7 (999) 000-00-00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/85 border border-suvorov-gold/35 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold">
+                    </div>
+                    <div>
+                        <label for="inline-order-comment" class="block text-[10px] uppercase tracking-wider text-slate-300 font-bold mb-1">Комментарий / пожелание (необязательно)</label>
+                        <textarea id="inline-order-comment" rows="2" placeholder="Уточните пожелания по оформлению или срокам..." class="w-full px-3.5 py-2 rounded-xl bg-slate-950/85 border border-suvorov-gold/35 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-suvorov-gold resize-none"></textarea>
+                    </div>
+
+                    <div class="pt-1 space-y-2">
+                        <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 via-blue-500 to-sky-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-telegram text-lg"></i>
+                            <span>Отправить заявку в Telegram (@niknegrey7)</span>
+                        </button>
+                        <button type="button" onclick="copyAndOpenTelegram('inline')" class="w-full py-3 rounded-2xl bg-slate-950/80 border border-suvorov-gold/45 text-suvorov-lightGold font-bold text-xs active:scale-95 transition-transform flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-copy text-suvorov-gold"></i>
+                            <span>Скопировать текст заявки и открыть @niknegrey7</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ВКЛАДКА 3: ПОХОДЫ                                         -->
+        <!-- ========================================================= -->
+        <div id="tab-campaigns" class="tab-panel hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-suvorov-gold font-bold block">Летопись 63 побед</span>
+                    <h2 class="font-serif text-2xl font-bold text-white">Великие походы и битвы</h2>
+                </div>
+                <span class="text-xs text-suvorov-gold font-bold">0 поражений</span>
+            </div>
+
+            <!-- Фильтры-чипы -->
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1 text-xs">
+                <button class="filter-btn active flex-shrink-0 px-3.5 py-2 rounded-xl bg-suvorov-gold text-slate-950 font-bold transition-all" data-category="all">
+                    Все походы
+                </button>
+                <button class="filter-btn flex-shrink-0 px-3.5 py-2 rounded-xl glass-card text-slate-300 font-semibold transition-all" data-category="turkey">
+                    Турецкие войны
+                </button>
+                <button class="filter-btn flex-shrink-0 px-3.5 py-2 rounded-xl glass-card text-slate-300 font-semibold transition-all" data-category="poland">
+                    Польша
+                </button>
+                <button class="filter-btn flex-shrink-0 px-3.5 py-2 rounded-xl glass-card text-slate-300 font-semibold transition-all" data-category="italy-alps">
+                    Италия и Альпы
+                </button>
+            </div>
+
+            <!-- Карточки сражений -->
+            <div class="space-y-4">
+
+                <!-- 1. Туртукай и Козлуджа -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="turkey">
+                    <div id="camp-img-1" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-1', 'Туртукай (1773) и Козлуджа (1774) — путь к Чёрному морю')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#1e1b18"/>
+                            <path d="M 0 130 Q 120 90 250 120 T 400 100 L 400 180 L 0 180 Z" fill="#292524"/>
+                            <circle cx="310" cy="48" r="24" fill="#f59e0b" opacity="0.6"/>
+                            <path d="M 60 150 L 140 95 L 210 150 Z" fill="#14241d"/>
+                            <circle cx="140" cy="82" r="13" fill="#fadbc0"/>
+                            <line x1="145" y1="92" x2="195" y2="75" stroke="#D4AF37" stroke-width="3.5"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-600 text-white uppercase">1773–1774 • Турецкая война</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Туртукай и победа при Козлудже</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Дважды стремительно взял Туртукай, а в 1774 г. после ночного марша разгромил 40-тысячную армию при Козлудже. Это вынудило Османскую империю подписать Кючук-Кайнарджийский мир, открывший России выход к Чёрному морю.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 2. Оборона Кинбурна -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="turkey">
+                    <div id="camp-img-2" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-2', 'Оборона Кинбурнской косы (1787 г.)')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#0c192c"/>
+                            <rect y="115" width="400" height="65" fill="#0369a1" opacity="0.6"/>
+                            <polygon points="0,145 260,115 400,155 400,180 0,180" fill="#d6c7a9"/>
+                            <circle cx="150" cy="105" r="16" fill="#ef4444" opacity="0.75"/>
+                            <circle cx="150" cy="105" r="8" fill="#fef08a"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-suvorov-crimson text-white uppercase">1787 • Оборона Кинбурна</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Подвиг на Кинбурнской косе</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            С 4-тысячным гарнизоном Суворов подпустил отборный турецкий десант на 200 шагов и нанёс сокрушительный штыковой удар. Был дважды ранен, но не покинул поле боя — десант был сброшен в море. Награждён высшим орденом Св. Андрея Первозванного.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 3. Битва при Рымнике -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="turkey">
+                    <div id="camp-img-3" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-3', 'Битва при Рымнике (1789 г.) — 25 тысяч против 100 тысяч')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#271c19"/>
+                            <rect y="105" width="400" height="75" fill="#3f2e21"/>
+                            <path d="M 40 160 L 180 95 L 340 160" fill="none" stroke="#D4AF37" stroke-width="3" stroke-dasharray="8 4"/>
+                            <circle cx="180" cy="82" r="14" fill="#D4AF37"/>
+                            <text x="180" y="86" text-anchor="middle" fill="#0A0E17" font-size="11" font-weight="bold">1789</text>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-suvorov-gold text-slate-950 uppercase">1789 • Граф Рымникский</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Рымник: 25 тысяч против 100 тысяч</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Пройдя 100 км за двое суток, Суворов соединился с союзниками и первым атаковал четырёхкратно превосходящую армию визиря. За 12 часов боя турки потеряли около 20 тысяч человек. За победу удостоен ордена Св. Георгия 1-й степени и графского титула «Суворов-Рымникский».
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 4. Взятие Измаила -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="turkey">
+                    <div id="camp-img-4" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-4', 'Штурм неприступного Измаила (22 декабря 1790 г.)')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#090d16"/>
+                            <rect x="45" y="75" width="310" height="75" fill="#3f3f46"/>
+                            <polygon points="35,75 65,42 95,75" fill="#52525b"/>
+                            <polygon points="305,75 335,42 365,75" fill="#52525b"/>
+                            <circle cx="135" cy="85" r="18" fill="#ef4444" opacity="0.85"/>
+                            <circle cx="265" cy="72" r="20" fill="#f97316" opacity="0.85"/>
+                            <line x1="165" y1="170" x2="195" y2="75" stroke="#D4AF37" stroke-width="4"/>
+                            <line x1="220" y1="170" x2="250" y2="75" stroke="#D4AF37" stroke-width="4"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-suvorov-crimson text-white uppercase">22 декабря 1790 • Измаил</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Штурм неприступного Измаила</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            После 6 дней тренировок на копии крепостного рва Суворов штурмовал твердыню девятью колоннами. Через 8 часов боя крепость пала. День взятия Измаила вошёл в историю как День воинской славы России.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 5. Польские кампании и штурм Праги -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="poland">
+                    <div id="camp-img-5" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-5', 'Польские кампании (1768–1772) и штурм Праги (1794 г.)')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#1e1b2e"/>
+                            <polygon points="80,150 130,65 180,150" fill="#312e81"/>
+                            <polygon points="210,150 265,55 320,150" fill="#1e3a8a"/>
+                            <circle cx="200" cy="60" r="18" fill="#D4AF37" opacity="0.8"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-600 text-white uppercase">1768–1772 и 1794 • Польша</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Полевая школа и штурм Праги</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            В 1768–1772 гг. Суворов провёл десятки стычек против Барской конфедерации без единого поражения, получив первый орден Св. Георгия 3-й ст. А в 1794 г. стремительным штурмом взял варшавское предместье Прагу, за что получил чин генерал-фельдмаршала.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 6. Итальянский и Швейцарский походы 1799 -->
+                <article class="campaign-card glass-card rounded-2xl overflow-hidden border border-suvorov-gold/25" data-category="italy-alps">
+                    <div id="camp-img-6" class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden" onclick="openSlotModal('camp-img-6', 'Итальянский и Швейцарский походы 1799 г. — Сен-Готард, Чёртов мост и Паникс')">
+                        <svg viewBox="0 0 400 180" class="w-full h-full object-cover">
+                            <rect width="400" height="180" fill="#0f172a"/>
+                            <polygon points="0,180 95,60 190,180" fill="#334155"/>
+                            <polygon points="130,180 230,35 330,180" fill="#475569"/>
+                            <polygon points="212,62 230,35 248,62 238,57 230,66 222,57" fill="#f8fafc"/>
+                            <polygon points="82,78 95,60 108,78" fill="#f8fafc"/>
+                            <ellipse cx="205" cy="130" rx="28" ry="14" fill="#e2e8f0"/>
+                            <circle cx="205" cy="100" r="8" fill="#fadbc0"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-t from-suvorov-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-sky-600 text-white uppercase">1799 • Италия и Альпы</span>
+                    </div>
+                    <div class="p-4 space-y-1.5">
+                        <h3 class="font-serif text-xl font-bold text-white">Италия (Адда, Треббия, Нови) и Альпы</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            За 4 месяца разгромил три французские армии и освободил Северную Италию. Затем в 70 лет совершил легендарный Швейцарский переход: взял Сен-Готард и Чёртов мост, а из окружения вывел армию через ледяной перевал Паникс, сохранив 80% состава. Удостоен звания Генералиссимуса.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ВКЛАДКА 4: НАУКА И ТЕСТ                                   -->
+        <!-- ========================================================= -->
+        <div id="tab-science" class="tab-panel hidden space-y-5">
+
+            <!-- Три кита «Науки побеждать» -->
+            <section class="space-y-3">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-suvorov-gold font-bold block">Военное искусство</span>
+                    <h2 class="font-serif text-2xl font-bold text-white">Три кита «Науки побеждать»</h2>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="rule-tab active py-3 px-2 rounded-2xl bg-suvorov-gold text-slate-950 text-center font-bold text-xs flex flex-col items-center gap-1 transition-all" data-target="r-eye">
+                        <i class="fa-solid fa-eye text-base"></i>
+                        <span>Глазомер</span>
+                    </button>
+                    <button class="rule-tab py-3 px-2 rounded-2xl glass-card text-slate-300 text-center font-bold text-xs flex flex-col items-center gap-1 transition-all" data-target="r-speed">
+                        <i class="fa-solid fa-bolt text-base"></i>
+                        <span>Быстрота</span>
+                    </button>
+                    <button class="rule-tab py-3 px-2 rounded-2xl glass-card text-slate-300 text-center font-bold text-xs flex flex-col items-center gap-1 transition-all" data-target="r-strike">
+                        <i class="fa-solid fa-shield-halved text-base"></i>
+                        <span>Натиск</span>
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 min-h-[125px] flex flex-col justify-center border border-suvorov-gold/30">
+                    <div id="r-eye" class="rule-body space-y-1.5">
+                        <div class="text-suvorov-lightGold font-serif font-bold text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-compass text-suvorov-gold"></i> 1. Глазомер
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Как в лагере стать, как идти, где атаковать, гнать и бить. Умение мгновенно оценить местность, силы противника и выбрать решающее направление главного удара.
+                        </p>
+                    </div>
+
+                    <div id="r-speed" class="rule-body hidden space-y-1.5">
+                        <div class="text-suvorov-lightGold font-serif font-bold text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-person-running text-suvorov-gold"></i> 2. Быстрота
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            «Одна минута решает исход баталии, один час — успех кампании, один день — судьбу империи». Суворовские войска совершали марши по 50–100 км, заставая врага врасплох.
+                        </p>
+                    </div>
+
+                    <div id="r-strike" class="rule-body hidden space-y-1.5">
+                        <div class="text-suvorov-lightGold font-serif font-bold text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-burst text-suvorov-gold"></i> 3. Натиск
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            «Нога ногу подкрепляет, рука руку усиливает; в пальбе много людей гибнет, у неприятеля те же руки, да русского штыка не знает». Решительная атака, ломающая волю врага.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Интерактивная викторина из 6 вопросов -->
+            <section class="space-y-3">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-suvorov-gold font-bold block">Проверьте себя</span>
+                    <h2 class="font-serif text-2xl font-bold text-white">Викторина: Суворов и Ёлка 2026</h2>
+                </div>
+
+                <div class="glass-card rounded-3xl p-5 border border-suvorov-gold/35 space-y-4">
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div id="q-bar" class="h-full bg-gradient-to-r from-suvorov-gold to-emerald-400 transition-all duration-300" style="width: 16.6%;"></div>
+                    </div>
+
+                    <div id="q-box" class="space-y-3">
+                        <div class="flex justify-between items-center text-[11px] text-slate-400">
+                            <span id="q-step" class="font-semibold">Вопрос 1 из 6</span>
+                            <span id="q-points" class="text-suvorov-lightGold font-bold">Баллы: 0</span>
+                        </div>
+
+                        <h3 id="q-text" class="font-serif text-lg font-bold text-white leading-snug"></h3>
+                        <div id="q-options" class="space-y-2"></div>
+                    </div>
+
+                    <div id="q-done" class="hidden text-center py-4 space-y-3">
+                        <div class="w-16 h-16 rounded-full bg-suvorov-gold/20 border border-suvorov-gold mx-auto flex items-center justify-center text-suvorov-gold text-2xl">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-white">Викторина пройдена!</h3>
+                        <p class="text-xs text-slate-200 leading-relaxed" id="q-result-text"></p>
+                        <button onclick="restartQuiz()" class="px-6 py-3 rounded-xl bg-suvorov-gold text-slate-950 font-extrabold text-xs uppercase tracking-wider active:scale-95 transition-transform">
+                            Пройти заново
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- НИЖНЕЕ НАВИГАЦИОННОЕ МЕНЮ ДЛЯ СМАРТФОНА (4 ВКЛАДКИ) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-suvorov-dark/95 backdrop-blur-xl border-t border-suvorov-gold/25 px-2 py-2">
+        <div class="max-w-md mx-auto grid grid-cols-4 text-center gap-1">
+            <button onclick="switchTab('home')" data-tab="home" class="nav-btn active flex flex-col items-center gap-1 text-suvorov-gold py-1.5 rounded-xl bg-suvorov-gold/10 transition-all">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[10px] font-bold leading-none">Главная</span>
+            </button>
+            <button onclick="switchTab('tree')" data-tab="tree" class="nav-btn flex flex-col items-center gap-1 text-slate-400 py-1.5 rounded-xl transition-all relative">
+                <span class="absolute top-1 right-4 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <i class="fa-solid fa-tree text-base"></i>
+                <span class="text-[10px] font-bold leading-none">Ёлка 2026</span>
+            </button>
+            <button onclick="switchTab('campaigns')" data-tab="campaigns" class="nav-btn flex flex-col items-center gap-1 text-slate-400 py-1.5 rounded-xl transition-all">
+                <i class="fa-solid fa-map-location-dot text-base"></i>
+                <span class="text-[10px] font-bold leading-none">Походы</span>
+            </button>
+            <button onclick="switchTab('science')" data-tab="science" class="nav-btn flex flex-col items-center gap-1 text-slate-400 py-1.5 rounded-xl transition-all">
+                <i class="fa-solid fa-award text-base"></i>
+                <span class="text-[10px] font-bold leading-none">Наука и Тест</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // =========================================================
+        // 1. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК НИЖНЕГО МЕНЮ
+        // =========================================================
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            const activePanel = document.getElementById('tab-' + tabName);
+            if (activePanel) activePanel.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const isMatch = btn.getAttribute('data-tab') === tabName;
+                if (isMatch) {
+                    btn.classList.add('active', 'text-suvorov-gold', 'bg-suvorov-gold/10');
+                    btn.classList.remove('text-slate-400');
+                } else {
+                    btn.classList.remove('active', 'text-suvorov-gold', 'bg-suvorov-gold/10');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =========================================================
+        // 2. ЗАГРУЗКА И СОХРАНЕНИЕ СВОИХ 3 ФОТО ИЗ ГАЛЕРЕИ ТЕЛЕФОНА
+        // =========================================================
+        const defaultSlotsHTML = {};
+        const managedSlotIds = ['hero-img-slot', 'thumb-slot-1', 'thumb-slot-2', 'thumb-slot-3', 'camp-img-3', 'camp-img-6'];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            managedSlotIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) defaultSlotsHTML[id] = el.innerHTML;
+            });
+
+            const s1 = localStorage.getItem('suvorov_custom_1');
+            const s2 = localStorage.getItem('suvorov_custom_2');
+            const s3 = localStorage.getItem('suvorov_custom_3');
+            if (s1 || s2 || s3) {
+                document.getElementById('reset-photos-btn').classList.remove('hidden');
+            }
+            if (s1) {
+                applyPhotoToSlot('hero-img-slot', s1);
+                applyPhotoToSlot('thumb-slot-1', s1);
+            }
+            if (s2) {
+                applyPhotoToSlot('thumb-slot-2', s2);
+                applyPhotoToSlot('camp-img-3', s2);
+            }
+            if (s3) {
+                applyPhotoToSlot('thumb-slot-3', s3);
+                applyPhotoToSlot('camp-img-6', s3);
+            }
+        });
+
+        document.getElementById('multi-file-loader').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files).slice(0, 3);
+            if (!files.length) return;
+
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const dataUrl = evt.target.result;
+                    if (index === 0) {
+                        applyPhotoToSlot('hero-img-slot', dataUrl);
+                        applyPhotoToSlot('thumb-slot-1', dataUrl);
+                        try { localStorage.setItem('suvorov_custom_1', dataUrl); } catch (err) {}
+                    } else if (index === 1) {
+                        applyPhotoToSlot('thumb-slot-2', dataUrl);
+                        applyPhotoToSlot('camp-img-3', dataUrl);
+                        try { localStorage.setItem('suvorov_custom_2', dataUrl); } catch (err) {}
+                    } else if (index === 2) {
+                        applyPhotoToSlot('thumb-slot-3', dataUrl);
+                        applyPhotoToSlot('camp-img-6', dataUrl);
+                        try { localStorage.setItem('suvorov_custom_3', dataUrl); } catch (err) {}
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('reset-photos-btn').classList.remove('hidden');
+            showToast(`Загружено фото: ${files.length} шт. Сохранено!`);
+        });
+
+        function applyPhotoToSlot(slotId, dataUrl) {
+            const slot = document.getElementById(slotId);
+            if (slot) {
+                slot.innerHTML = `<img src="${dataUrl}" class="w-full h-full object-cover object-top" alt="Портрет А. В. Суворова">`;
+            }
+        }
+
+        function resetCustomPhotos() {
+            localStorage.removeItem('suvorov_custom_1');
+            localStorage.removeItem('suvorov_custom_2');
+            localStorage.removeItem('suvorov_custom_3');
+            managedSlotIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && defaultSlotsHTML[id]) el.innerHTML = defaultSlotsHTML[id];
+            });
+            document.getElementById('reset-photos-btn').classList.add('hidden');
+            showToast('Возвращены встроенные портреты');
+        }
+
+        // =========================================================
+        // 3. МОДАЛЬНЫЕ ОКНА И КОПИРОВАНИЕ ЦИТАТ
+        // =========================================================
+        const imageModal = document.getElementById('image-modal');
+        const modalContainer = document.getElementById('modal-container');
+        const modalCaption = document.getElementById('modal-caption');
+
+        function openSlotModal(slotId, caption) {
+            const slot = document.getElementById(slotId);
+            if (!slot) return;
+            modalContainer.innerHTML = slot.innerHTML;
+            modalCaption.textContent = caption;
+            imageModal.classList.remove('hidden');
+        }
+
+        document.getElementById('modal-close').addEventListener('click', () => imageModal.classList.add('hidden'));
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) imageModal.classList.add('hidden');
+        });
+
+        function openOrderModal() {
+            document.getElementById('order-modal').classList.remove('hidden');
+        }
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.add('hidden');
+        }
+
+        let selectedTreeIndex = 0;
+
+        function buildTelegramOrderText(prefix) {
+            const nameEl = document.getElementById(`${prefix}-order-name`);
+            const contactEl = document.getElementById(`${prefix}-order-contact`);
+            const commentEl = document.getElementById(`${prefix}-order-comment`);
+
+            const name = nameEl && nameEl.value.trim() ? nameEl.value.trim() : 'Не указано';
+            const contact = contactEl && contactEl.value.trim() ? contactEl.value.trim() : 'Не указан';
+            const comment = commentEl && commentEl.value.trim() ? commentEl.value.trim() : 'Без комментариев';
+            const activeTier = treeItems[selectedTreeIndex]
+                ? treeItems[selectedTreeIndex].title
+                : 'Александр Суворов и его доблестные победы 2026';
+
+            return [
+                '🎄 Заявка на новогоднюю Ёлку 2026: «Александр Суворов и его доблестные победы»',
+                `👤 Имя: ${name}`,
+                `🏫 Класс / Контакт: ${contact}`,
+                `⭐ Выбранный ярус / символ: ${activeTier}`,
+                `💬 Комментарий: ${comment}`
+            ].join('\n');
+        }
+
+        function copyTextFallback(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => {
+                    const input = document.createElement('textarea');
+                    input.value = text;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                });
+            } else {
+                const input = document.createElement('textarea');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            }
+        }
+
+        function submitTreeOrder(e, prefix) {
+            e.preventDefault();
+            const messageText = buildTelegramOrderText(prefix);
+            copyTextFallback(messageText);
+
+            const tgUrl = `https://t.me/niknegrey7?text=${encodeURIComponent(messageText)}`;
+            if (prefix === 'modal') closeOrderModal();
+
+            showToast('Открываем чат @niknegrey7 с текстом заявки...');
+            window.open(tgUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function copyAndOpenTelegram(prefix) {
+            const nameEl = document.getElementById(`${prefix}-order-name`);
+            const contactEl = document.getElementById(`${prefix}-order-contact`);
+
+            if (!nameEl.value.trim() || !contactEl.value.trim()) {
+                showToast('Укажите ваше имя и класс / контакт');
+                if (!nameEl.value.trim()) nameEl.focus();
+                else contactEl.focus();
+                return;
+            }
+
+            const messageText = buildTelegramOrderText(prefix);
+            copyTextFallback(messageText);
+
+            if (prefix === 'modal') closeOrderModal();
+            showToast('Текст заявки скопирован! Открываем @niknegrey7...');
+            window.open('https://t.me/niknegrey7', '_blank', 'noopener,noreferrer');
+        }
+
+        function copyQuote(text) {
+            const input = document.createElement('textarea');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast('Афоризм скопирован в буфер!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2400);
+        }
+
+        // =========================================================
+        // 4. ИНТЕРАКТИВНАЯ СХЕМА-ЁЛКА 2026
+        // =========================================================
+        const treeItems = [
+            {
+                badge: 'Вершина ёлки • Элемент 1 из 6',
+                title: 'Швейцарский поход и чин Генералиссимуса',
+                desc: 'Венчает нашу ёлку как высший триумф: переход через Альпы (Сен-Готард, Чёртов мост, перевал Паникс) в 1799 году и присвоение 28 октября 1799 г. высшего воинского звания Генералиссимуса российских войск.'
+            },
+            {
+                badge: 'Верхний ярус • Элемент 2 из 6',
+                title: 'Ордена Св. Георгия 1-й ст. и Андрея Первозванного',
+                desc: 'Игрушки ручной работы в виде главных боевых наград полководца: ордена Св. Георгия (всех трёх степеней — за Польшу, Туртукай и Рымник) и ордена Св. Андрея Первозванного за героическую оборону Кинбурна.'
+            },
+            {
+                badge: 'Верхний ярус • Элемент 3 из 6',
+                title: 'Бриллиантовая шпага «Победителю визиря»',
+                desc: 'Символ Рымникской победы 1789 года, где 25-тысячное союзное войско под началом Суворова разгромило 100-тысячную армию турецкого визиря, принеся полководцу титул графа Рымникского.'
+            },
+            {
+                badge: 'Средний ярус • Элемент 4 из 6',
+                title: 'Макет крепости Измаил (ручная работа)',
+                desc: 'Миниатюрный муляж неприступной крепости Измаил, взятой 22 декабря 1790 года после тщательной подготовки солдат на земляном макете рвов и валов.'
+            },
+            {
+                badge: 'Средний ярус • Элемент 5 из 6',
+                title: 'Книга «Наука побеждать» и полководческая треуголка',
+                desc: 'Воплощение трёх главных правил Суворова: «Глазомер, быстрота, натиск» и заботы о простом русском солдате, вместе с которым выросли Кутузов, Багратион и Милорадович.'
+            },
+            {
+                badge: 'Основание ёлки • Элемент 6 из 6',
+                title: 'Фундамент характера: закаливание и книги Плутарха',
+                desc: 'Напоминание о том, как слабый и болезненный мальчик победил недуги обливанием ледяной водой, прогулками без шубы и чтением биографий великих полководцев при поддержке деда и Абрама Ганнибала.'
+            }
+        ];
+
+        function selectTreeItem(idx) {
+            const item = treeItems[idx];
+            if (!item) return;
+            selectedTreeIndex = idx;
+            document.getElementById('tree-item-badge').textContent = item.badge;
+            document.getElementById('tree-item-title').textContent = item.title;
+            document.getElementById('tree-item-desc').textContent = item.desc;
+
+            document.querySelectorAll('.tree-chip').forEach((chip, i) => {
+                if (i === idx) {
+                    chip.classList.add('bg-suvorov-gold', 'text-slate-950', 'font-bold');
+                    chip.classList.remove('bg-white/5', 'text-slate-300');
+                } else {
+                    chip.classList.remove('bg-suvorov-gold', 'text-slate-950', 'font-bold');
+                    chip.classList.add('bg-white/5', 'text-slate-300');
+                }
+            });
+        }
+
+        // Аккордеон 7 вопросов
+        document.querySelectorAll('.q7-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('.fa-chevron-down');
+                const isHidden = content.classList.contains('hidden');
+
+                document.querySelectorAll('.q7-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.q7-btn .fa-chevron-down').forEach(ic => ic.classList.remove('rotate-180'));
+
+                if (isHidden) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // =========================================================
+        // 5. ФИЛЬТРЫ ПОХОДОВ И ТАБЫ «НАУКИ ПОБЕЖДАТЬ»
+        // =========================================================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-suvorov-gold', 'text-slate-950');
+                    b.classList.add('glass-card', 'text-slate-300');
+                });
+                btn.classList.add('active', 'bg-suvorov-gold', 'text-slate-950');
+                btn.classList.remove('glass-card', 'text-slate-300');
+
+                const cat = btn.getAttribute('data-category');
+                document.querySelectorAll('.campaign-card').forEach(card => {
+                    if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.rule-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.rule-tab').forEach(t => {
+                    t.classList.remove('active', 'bg-suvorov-gold', 'text-slate-950');
+                    t.classList.add('glass-card', 'text-slate-300');
+                });
+                tab.classList.add('active', 'bg-suvorov-gold', 'text-slate-950');
+                tab.classList.remove('glass-card', 'text-slate-300');
+
+                const target = tab.getAttribute('data-target');
+                document.querySelectorAll('.rule-body').forEach(b => {
+                    b.classList.toggle('hidden', b.id !== target);
+                });
+            });
+        });
+
+        // =========================================================
+        // 6. ВИКТОРИНА ИЗ 6 ВОПРОСОВ
+        // =========================================================
+        const quizQuestions = [
+            {
+                q: "Сколько сражений проиграл А. В. Суворов за всю свою 60-летнюю службу?",
+                opts: ["Ни одного (0 из 63)", "1 сражение в Альпах", "2 сражения в Польше", "3 сражения"],
+                ans: 0
+            },
+            {
+                q: "Кто из известных генералов (прадед А. С. Пушкина) заметил талант юного Суворова и убедил отца оставить его на военной службе?",
+                opts: ["Пётр Румянцев", "Абрам Ганнибал", "Григорий Потёмкин", "Михаил Кутузов"],
+                ans: 1
+            },
+            {
+                q: "Каковы три главных принципа суворовской «Науки побеждать»?",
+                opts: ["Оборона, Осада, Резерв", "Глазомер, Быстрота, Натиск", "Хитрость, Внезапность, Окопы", "Артиллерия, Кавалерия, Флот"],
+                ans: 1
+            },
+            {
+                q: "За какое сражение 1789 года (25 тысяч против 100 тысяч) Суворов получил графский титул и орден Св. Георгия 1-й степени?",
+                opts: ["Штурм Измаила", "Битва при Рымнике", "Оборона Кинбурна", "Сражение при Нови"],
+                ans: 1
+            },
+            {
+                q: "Какое высшее воинское звание в истории России получил Суворов 28 октября 1799 года за Швейцарский поход?",
+                opts: ["Генерал-фельдмаршал", "Генерал-аншеф", "Генералиссимус", "Князь Италийский"],
+                ans: 2
+            },
+            {
+                q: "В каком стиле наш класс оформляет новогоднюю Ёлку в 2026 году?",
+                opts: ["Космические открытия", "А. В. Суворов и его доблестные победы", "Сказки А. С. Пушкина", "Морской флот Петра I"],
+                ans: 1
+            }
+        ];
+
+        let curQ = 0;
+        let score = 0;
+
+        function renderQuiz() {
+            const item = quizQuestions[curQ];
+            document.getElementById('q-bar').style.width = `${((curQ + 1) / quizQuestions.length) * 100}%`;
+            document.getElementById('q-step').textContent = `Вопрос ${curQ + 1} из ${quizQuestions.length}`;
+            document.getElementById('q-points').textContent = `Баллы: ${score}`;
+            document.getElementById('q-text').textContent = item.q;
+
+            const optsBox = document.getElementById('q-options');
+            optsBox.innerHTML = '';
+
+            item.opts.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-suvorov-gold/25 glass-card text-xs font-semibold text-slate-200 flex justify-between items-center gap-2 transition-all active:scale-[0.98]";
+                btn.innerHTML = `<span>${opt}</span><i class="fa-regular fa-circle text-slate-500 shrink-0"></i>`;
+                btn.onclick = () => submitQuizAnswer(idx, btn);
+                optsBox.appendChild(btn);
+            });
+        }
+
+        function submitQuizAnswer(idx, btn) {
+            const item = quizQuestions[curQ];
+            const allBtns = document.querySelectorAll('#q-options button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (idx === item.ans) {
+                btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300');
+                btn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-400 shrink-0";
+                score++;
+                document.getElementById('q-points').textContent = `Баллы: ${score}`;
+            } else {
+                btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-300');
+                btn.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-400 shrink-0";
+                allBtns[item.ans].classList.add('border-emerald-500', 'text-emerald-300');
+            }
+
+            setTimeout(() => {
+                curQ++;
+                if (curQ < quizQuestions.length) {
+                    renderQuiz();
+                } else {
+                    document.getElementById('q-box').classList.add('hidden');
+                    document.getElementById('q-done').classList.remove('hidden');
+                    document.getElementById('q-result-text').textContent = `Ваш результат: ${score} из ${quizQuestions.length} правильных ответов! Настоящий знаток суворовской «Науки побеждать»!`;
+                }
+            }, 850);
+        }
+
+        function restartQuiz() {
+            curQ = 0;
+            score = 0;
+            document.getElementById('q-done').classList.add('hidden');
+            document.getElementById('q-box').classList.remove('hidden');
+            renderQuiz();
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
